@@ -1,11 +1,18 @@
--- Same-schema PostgreSQL exercises. See the corresponding PDF.
-
 -- IC6.1 -- Operators with recent completed missions
--- Your SQL:
+select o.id, o.name, o.country
+from operators o
+where o.deleted_at is null
+and o.id in (
+	select m.operator_id 
+	from missions m 
+	where m.status = 'completed'
+	and m.started_at >= '2026-09-01' 
+	and m.started_at < '2026-10-01'
+)
+order by o.id;
 
 
 -- IC6.2 -- Five missions for planned-cost review
--- Your SQL:
 
 
 -- IC6.3 -- Operator contact availability
