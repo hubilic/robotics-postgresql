@@ -11,9 +11,19 @@ and o.id in (
 )
 order by o.id;
 
-
 -- IC6.2 -- Five missions for planned-cost review
-
+select m.id, m.cost,
+	(
+	select o.name
+	from operators o
+	where o.id = m.operator_id 
+	) as operator_name
+from missions m
+where m.started_at < '2026-10-01' 
+and (m.status = 'queued' or m.status is null)
+and m.cost >= '100'
+order by m.cost desc, m.id asc 
+limit 5;
 
 -- IC6.3 -- Operator contact availability
 -- Your SQL:
