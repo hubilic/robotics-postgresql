@@ -61,7 +61,14 @@ order by
 	 
 
 -- IC6.5 -- Literal characters in robot model names
--- Your SQL:
+select 
+	rm.id,
+	rm.name,
+	rm.unit_cost
+from robot_models rm 
+where rm."name" like '%!_%' escape '!'
+or rm."name" like '%!%%' escape '!'
+order by id;
 
 
 -- IC6.6 -- Prioritize the mission review list
