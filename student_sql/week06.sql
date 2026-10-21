@@ -45,8 +45,20 @@ order by
 
 
 -- IC6.4 -- Country coverage for a robot training session
--- Your SQL:
-
+select 
+	o.id,
+	o.name,
+	o.country 
+from operators o 
+where o.country = 'PL'
+or o.country is null
+order by 
+	case
+		when o.country = 'PL' then 1
+		else 2
+	end,
+	o.id;
+	 
 
 -- IC6.5 -- Literal characters in robot model names
 -- Your SQL:
