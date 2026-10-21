@@ -26,7 +26,22 @@ order by m.cost desc, m.id asc
 limit 5;
 
 -- IC6.3 -- Operator contact availability
--- Your SQL:
+select
+	o.id,
+	o.email,
+	case
+		when o.email is null then 'null_email'
+		when trim(o.email) = '' then 'blank_email'
+		else 'available'
+	end as contact_state
+from operators o 
+order by 
+	case
+		when o.email is null then 1
+		when trim(o.email) = '' then 2
+		else 3
+	end,
+	o.id
 
 
 -- IC6.4 -- Country coverage for a robot training session
