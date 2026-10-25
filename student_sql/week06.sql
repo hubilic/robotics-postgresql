@@ -92,7 +92,13 @@ order by
 	m.id asc;
 
 -- IC6.7 -- Age of completed mission records
--- Your SQL:
+select
+	m.id,
+	m.started_at,
+	timestamp '2026-10-01' - m.started_at as age_days
+from missions m 
+where timestamp '2026-10-01' - m.started_at < interval '60 days'
+order by m.started_at, m.id;
 
 
 -- IC6.8 -- Registration to first completed mission
