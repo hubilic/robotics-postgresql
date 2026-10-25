@@ -72,8 +72,24 @@ order by id;
 
 
 -- IC6.6 -- Prioritize the mission review list
--- Your SQL:
-
+select
+	m.id,
+	m.status,
+	m.started_at,
+	m.cost
+from missions m 
+where m.started_at < '2026-10-01'
+order by 
+	case
+		when m.status = 'queued' then 1
+		when m.status is null then 2
+		when m.status = 'completed' then 3
+		when m.status = 'aborted' then 4
+		else 5
+	end,
+	m.started_at asc nulls last,
+	m.cost desc nulls last,
+	m.id asc;
 
 -- IC6.7 -- Age of completed mission records
 -- Your SQL:
