@@ -102,6 +102,24 @@ order by m.started_at, m.id;
 
 
 -- IC6.8 -- Registration to first completed mission
+ select
+ 	o.id,
+ 	o.name,
+ 	o.registered_at,
+ 	(
+ 		select min (m.started_at)::date from missions m 
+ 		where m.operator_id = o.id
+ 		and m.status = 'completed'
+ 		and m.started_at < timestamp '2026-10-01') - o.registered_at::date as diff,
+ 	(
+ 		select min(m.started_at) from missions m 
+ 		where m.operator_id = o.id and m.status = 'completed' and m.started_at < timestamp '2026-10-01'
+ 		) as first_completed_at
+ from operators o
+ where o.registered_at >= timestamp '2026-01-01'
+ and o.registered_at < timestamp '2026-10-01'
+ order by o.id;
+ 	
 
 
 -- IC6.9 -- Mission history without an abort
@@ -137,7 +155,8 @@ order by o.id;
 
 
 -- HW6.3 -- An operator experience lifecycle
--- Your SQL:
+-- Your SQL:select
+
 
 
 -- HW6.4 -- Mask operator contact details
