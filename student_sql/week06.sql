@@ -102,12 +102,27 @@ order by m.started_at, m.id;
 
 
 -- IC6.8 -- Registration to first completed mission
--- Your SQL:
 
 
 -- IC6.9 -- Mission history without an abort
--- Your SQL:
-
+select
+ o.id,
+ o.name
+from operators o 
+where exists (
+	select 1
+	from missions m
+	where m.operator_id = o.id
+	and m.started_at < timestamp '2026-10-01'
+)
+and not exists (
+	select 1
+	from missions m
+	where m.operator_id = o.id 
+	and m.status = 'aborted'
+	and m.started_at < timestamp '2026-10-01'
+)
+order by o.id;
 
 -- IC6.10 -- Mission costs above an operator's baseline
 -- Your SQL:
