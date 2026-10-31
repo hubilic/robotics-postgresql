@@ -121,7 +121,6 @@ order by m.started_at, m.id;
  order by o.id;
  	
 
-
 -- IC6.9 -- Mission history without an abort
 select
  o.id,
@@ -151,7 +150,32 @@ order by o.id;
 
 
 -- HW6.2 -- The second mission-cost tier by country
--- Your SQL:
+select
+	m.id,
+	m.cost,
+	(
+	select o.country from operators o
+	where m.operator_id = o.id
+	) as country
+from missions m
+where m.started_at < timestamp '2026-10-01'
+and m."cost" = (
+	select max(m2.cost) from missions m2 
+	where m2.started_at < timestamp '2026-10-01'
+	and (
+		select o2.country from operators o2 where o2.id = m2.operator_id 
+	) = (
+		select o.country from operators o where o.id = m.operator_id 
+	)
+	and m2."cost"  < (
+	select max(m3."cost") from missions m3 where m3.started_at < timestamp '2026-10-01'
+	and (
+	select o3.country from operators o3 where o3.id = m3.operator_id 
+	) = (
+	select o.country from operators o where o.id = m.operator_id 
+	)
+)
+);
 
 
 -- HW6.3 -- An operator experience lifecycle
