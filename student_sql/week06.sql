@@ -177,10 +177,35 @@ and m."cost" = (
 )
 );
 
-
 -- HW6.3 -- An operator experience lifecycle
--- Your SQL:select
-
+select
+	o.id,
+	(
+	select MAX(m.started_at )from missions m
+	where m.operator_id = o.id
+	and m.status = 'completed'
+	and m.started_at < timestamp '2026-10-01'
+	) as last_completed_at,
+	case
+		when o.deleted_at < timestamp '2026-10-01' then 'deactivated'
+		when o.registered_at >= timestamp '2026-09-01' and o.registered_at < timestamp '2026-10-01' then 'new'
+		when 
+		(
+		select MAX(m.started_at )from missions m
+		where m.operator_id = o.id
+		and m.status = 'completed'
+		and m.started_at < timestamp '2026-10-01'
+		) < timestamp '2026-04-04' then 'dormant'
+		when exists (
+		select 1 from missions m where m.operator_id = o.id
+		and m.status = 'completed'
+		and m.started_at < timestamp '2026-10-01'
+		) then 'experienced'
+		else 'unproven'
+	end as segment
+from operators o
+where o.registered_at < timestamp '2026-10-01'
+order by o.id;
 
 
 -- HW6.4 -- Mask operator contact details
