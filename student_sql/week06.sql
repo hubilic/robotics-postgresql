@@ -213,8 +213,24 @@ order by o.id;
 
 
 -- HW6.5 -- A mission's share of completed costs
--- Your SQL:
-
+select
+	m.id,
+	m.operator_id,
+	m.cost,
+	round(
+		m."cost" * 100.0 / nullif((
+		select sum(m2.cost)
+		from missions m2
+		where m2.operator_id = m.operator_id
+		and m2.status = 'completed'
+		and m2.started_at < timestamp '2026-10-01'
+		),0),2) as mission_percentahe
+from missions m 
+join operators o on o.id = m.operator_id
+where m.started_at >= timestamp '2026-09-01'
+and m.started_at < timestamp '2026-10-01'
+and m.status = 'completed'
+order by o.id, m.id;
 
 -- HW6.6 -- Robot models without a completed deployment
 -- Your SQL:
