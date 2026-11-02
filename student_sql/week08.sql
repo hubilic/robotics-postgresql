@@ -1,8 +1,15 @@
 -- Same-schema PostgreSQL exercises. See the corresponding PDF.
 
 -- IC8.1 -- A mission review list with guest operators
--- Your SQL:
-
+select
+	m.id as mission_id,
+	o.name as operator_name,
+	o.country,
+	m.cost
+from missions m left join operators o on m.operator_id = o.id
+where m.started_at >= timestamp '2026-09-01' and m.started_at < timestamp '2026-10-01'
+and (m.status is null or m.status ='queued')
+order by  m.id;
 
 -- IC8.2 -- Historical deployment rates versus current rates
 -- Your SQL:
