@@ -12,8 +12,20 @@ and (m.status is null or m.status ='queued')
 order by  m.id;
 
 -- IC8.2 -- Historical deployment rates versus current rates
--- Your SQL:
-
+select
+	mi.id,
+	rm.name,
+	ma.name,
+	mr.robot_count,
+	mr.robot_count * mr.unit_cost as historical_deployment,
+	mr.unit_cost,
+	rm.unit_cost
+from missions mi join mission_robots mr on mi.id = mr.mission_id
+join robot_models rm on mr.robot_model_id = rm.id
+join manufacturers ma on rm.manufacturer_id = ma.id
+where mi.started_at >= timestamp '2026-09-01' and mi.started_at < timestamp '2026-10-01'
+and mr.unit_cost <> rm.unit_cost 
+order by mi.id, rm.id;
 
 -- IC8.3 -- Operators without a September completion
 -- Your SQL:
