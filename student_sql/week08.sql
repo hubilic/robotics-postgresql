@@ -28,8 +28,15 @@ and mr.unit_cost <> rm.unit_cost
 order by mi.id, rm.id;
 
 -- IC8.3 -- Operators without a September completion
--- Your SQL:
-
+select
+	o.id,
+	o.name
+from operators o
+left join missions m on
+o.id = m.operator_id
+and m.status = 'completed' and m.started_at >= timestamp '2026-09-01' and m.started_at < timestamp '2026-10-01'
+where m.id is null
+order by o.id;
 
 -- IC8.4 -- Two levels of robot category ancestry
 -- Your SQL:
