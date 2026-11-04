@@ -39,8 +39,13 @@ where m.id is null
 order by o.id;
 
 -- IC8.4 -- Two levels of robot category ancestry
--- Your SQL:
-
+select
+	rc.id,
+	rc.name,
+	rc.parent_id,
+	rc2.parent_id as grandparent_id from robot_categories rc left join robot_categories rc2 on rc.parent_id = rc2.id
+	left join robot_categories rc3 on rc2.parent_id = rc3.id
+order by rc.id
 
 -- IC8.5 -- The first fourteen days of operator activity
 -- Your SQL:
